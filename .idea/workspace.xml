@@ -5,20 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82a03fa0-633d-4cd4-8e2c-d8130fe994e5" name="更改" comment="基础框架">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Course.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Teacher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/TeacherType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/AdminServiceFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/DataHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/LoginFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/StudentServiceFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/TeacherServiceFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/util/Utils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StudentGradesManagement.iml" beforeDir="false" afterPath="$PROJECT_DIR$/StudentGradesManagement.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/major" beforeDir="false" afterPath="$PROJECT_DIR$/src/major.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Course.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Grade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Grade.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/gradeLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/GradeLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/bean/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/module/DataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/DataHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/module/LoginFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/LoginFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/module/StudentServiceFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/module/StudentServiceFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/me/ziahh/sgm/util/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/me/ziahh/sgm/util/Utils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +50,10 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
@@ -92,7 +94,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1701522447910</updated>
-      <workItem from="1701522448924" duration="6055000" />
+      <workItem from="1701522448924" duration="12406000" />
     </task>
     <task id="LOCAL-00001" summary="基础框架">
       <option name="closed" value="true" />
@@ -102,7 +104,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701606508364</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="基础框架">
+      <option name="closed" value="true" />
+      <created>1701608048201</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701608048201</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,5 +121,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="基础框架" />
     <option name="LAST_COMMIT_MESSAGE" value="基础框架" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/me/ziahh/sgm/module/LoginFrame.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

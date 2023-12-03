@@ -6,6 +6,16 @@ public class Grade {
     private double score;
     private GradeLevel gradeLevel;
 
+    public Grade() {
+    }
+
+    public Grade(String courseId, String studentId, double score, GradeLevel gradeLevel) {
+        this.courseId = courseId;
+        this.studentId = studentId;
+        this.score = score;
+        this.gradeLevel = gradeLevel;
+    }
+
     public String getCourseId() {
         return courseId;
     }

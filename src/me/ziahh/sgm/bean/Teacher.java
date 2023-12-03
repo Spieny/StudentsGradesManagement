@@ -3,6 +3,7 @@ package me.ziahh.sgm.bean;
 public class Teacher {
 
     private String teacherName;
+    //约定教师的工号长度为四位数
     private String teacherId;
     private String teacherPassword;
     private TeacherType teacherType;
