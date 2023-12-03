@@ -1,6 +1,7 @@
 package me.ziahh.sgm.util;
 
 import me.ziahh.sgm.bean.Student;
+import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.module.DataHandler;
 
 import javax.xml.crypto.Data;
@@ -92,15 +93,28 @@ public class Utils {
     }
 
     /***
-     * 根据学生id，返回该学生对象，id有误则返回null
-     * @param id 学生id
-     * @return 学生对象
+     * 根据id，返回该学生或老师对象，id有误则返回null
+     * @param id id
+     * @return 学生或老师对象
      */
-    public static Student getStudentById(String id){
-        for(Student student:DataHandler.getStudents()){
-            if (student.getStudentId().equals(id)){
-                return student;
+    public static Object getPersonById(String id){
+        //通过id长度判断是老师还是学生
+        if (id.length() == DataHandler.TEACHER_IN_LENGTH){
+            for (Teacher teacher:DataHandler.getTeachers()){
+                if(teacher.getTeacherId().equals(id)){
+                    return teacher;
+                }
             }
+            return null;
+        }
+        else if (id.length() == DataHandler.STUDENT_ID_LENGTH){
+            for(Student student:DataHandler.getStudents()){
+                if (student.getStudentId().equals(id)){
+                    return student;
+                }
+            }
+        } else {
+            return null;
         }
         return null;
     }

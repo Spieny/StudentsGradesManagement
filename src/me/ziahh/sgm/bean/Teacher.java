@@ -1,12 +1,31 @@
 package me.ziahh.sgm.bean;
 
+import me.ziahh.sgm.module.DataHandler;
+import me.ziahh.sgm.util.Utils;
+
 public class Teacher {
 
     private String teacherName;
     //约定教师的工号长度为四位数
     private String teacherId;
     private String teacherPassword;
-    private TeacherType teacherType;
+    //默认情况下为任课老师权限
+    private TeacherType teacherType = TeacherType.TEACHER;
+
+    public Teacher(String teacherName, String teacherPassword, TeacherType teacherType) {
+        this.teacherName = teacherName;
+        this.teacherType = teacherType;
+        this.teacherId = String.valueOf(DataHandler.getTeachers().size() + 1000);
+        try {
+            this.teacherPassword = Utils.getMD5(teacherPassword);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public Teacher() {
+        this.teacherId = String.valueOf(DataHandler.getTeachers().size() + 1000);
+    }
 
     public String getTeacherName() {
         return teacherName;
@@ -38,5 +57,15 @@ public class Teacher {
 
     public void setTeacherType(TeacherType teacherType) {
         this.teacherType = teacherType;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "teacherName='" + teacherName + '\'' +
+                ", teacherId='" + teacherId + '\'' +
+                ", teacherPassword='" + teacherPassword + '\'' +
+                ", teacherType=" + teacherType +
+                '}';
     }
 }

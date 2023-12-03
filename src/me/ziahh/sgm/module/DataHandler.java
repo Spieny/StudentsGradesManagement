@@ -9,6 +9,11 @@ import java.util.ArrayList;
 
 public class DataHandler {
 
+    //约定学生的学号长度为十二
+    public static final int STUDENT_ID_LENGTH = 12;
+    //约定教师的工号长度为四
+    public static final int TEACHER_IN_LENGTH = 4;
+
     private static ArrayList<Student> students = new ArrayList<>();
     private static ArrayList<Teacher> teachers = new ArrayList<>();
     private static ArrayList<Course> courses = new ArrayList<>();
