@@ -1,6 +1,6 @@
 package me.ziahh.sgm.bean;
 
-public enum gradeLevel {
+public enum GradeLevel {
     //100-90分
     EXCELLENT("优秀"),
     //89-80分
@@ -12,7 +12,7 @@ public enum gradeLevel {
 
     private final String name;
 
-    gradeLevel(String name) {
+    GradeLevel(String name) {
         this.name = name;
     }
 
