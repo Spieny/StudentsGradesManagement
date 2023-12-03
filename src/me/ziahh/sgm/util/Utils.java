@@ -16,7 +16,7 @@ public class Utils {
      * @param str 要加密的字符串
      * @return
      */
-    public static String getMD5(String str) throws Exception {
+    public static String getMD5(String str){
         try {
             // 生成一个MD5加密计算摘要
             MessageDigest md = MessageDigest.getInstance("MD5");

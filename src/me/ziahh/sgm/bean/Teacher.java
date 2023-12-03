@@ -3,6 +3,8 @@ package me.ziahh.sgm.bean;
 import me.ziahh.sgm.module.DataHandler;
 import me.ziahh.sgm.util.Utils;
 
+import java.util.ArrayList;
+
 public class Teacher {
 
     private String teacherName;
@@ -11,6 +13,7 @@ public class Teacher {
     private String teacherPassword;
     //默认情况下为任课老师权限
     private TeacherType teacherType = TeacherType.TEACHER;
+    private ArrayList<String> teachCoursesIds = new ArrayList<>();
 
     public Teacher(String teacherName, String teacherPassword, TeacherType teacherType) {
         this.teacherName = teacherName;
@@ -61,11 +64,10 @@ public class Teacher {
 
     @Override
     public String toString() {
-        return "Teacher{" +
-                "teacherName='" + teacherName + '\'' +
-                ", teacherId='" + teacherId + '\'' +
-                ", teacherPassword='" + teacherPassword + '\'' +
-                ", teacherType=" + teacherType +
-                '}';
+        return "----教师基本信息----" + "\n"
+                + "姓名:" + teacherName  + "\n"
+                + "工号:" + teacherId + "\n"
+                + "任课：" + teachCoursesIds.size() + "\n"
+                + "------------------";
     }
 }
