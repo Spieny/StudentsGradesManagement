@@ -47,4 +47,20 @@ public class Grade {
     public void setGradeLevel(GradeLevel gradeLevel) {
         this.gradeLevel = gradeLevel;
     }
+
+    public static GradeLevel getGradeLevelByScore(double score){
+        if (score >= 0 && score < 60){
+            return GradeLevel.FAIL;
+        }
+        if (score >= 60 && score < 80){
+            return GradeLevel.PASS;
+        }
+        if (score >= 80 && score < 90){
+            return GradeLevel.GOOD;
+        }
+        if (score >= 90 && score <= 100){
+            return GradeLevel.EXCELLENT;
+        }
+        return null;
+    }
 }

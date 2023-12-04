@@ -126,6 +126,20 @@ public class Utils {
         return null;
     }
 
+    /***
+     * 根据课程id，返回该课程对象，id有误则返回null
+     * @param id 课程id
+     * @return 课程对象
+     */
+    public static Course getCourseById(String id){
+        for(Course c: DataHandler.getCourses()){
+            if (c.getCourseId().equals(id)){
+                return c;
+            }
+        }
+        return null;
+    }
+
     /**
      * 判断输入的邮箱格式是否正确
      * @param str 输入的邮箱地址
@@ -154,8 +168,23 @@ public class Utils {
         return time;
     }
 
+    /**
+     * 以字符串的形式获取现在的日期时间
+     *
+     * @return 日期时间的字符串
+     */
     public static String getStringOfDateTime(LocalDateTime ldt){
         return dtf.format(ldt);
+    }
+
+    public static boolean isLegalScore(String score){
+        double i;
+        try{
+            i = Double.parseDouble(score);
+        } catch (Exception e){
+            return false;
+        }
+        return i >= 0 && i <= 100;
     }
     /**
      * 校验字符串是否为正确的学生学号

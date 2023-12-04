@@ -19,8 +19,6 @@ public class Student {
     private LocalDateTime buildTime;
     //最后修改时间
     private LocalDateTime lastModifiedTime;
-    //成绩表
-    private ArrayList<Grade> grades;
 
     //学生的增加功能只能输入姓名，学号，邮箱。即其他信息由学号获取;
     public Student(String studentName, String studentId, String studentEmail) {
@@ -43,7 +41,7 @@ public class Student {
 
     public Student(String studentName, String studentId, String studentPassword,
                    char studentGender, String studentClass, String studentEmail,
-                   LocalDateTime buildTime, LocalDateTime lastModifiedTime, ArrayList<Grade> grades) {
+                   LocalDateTime buildTime, LocalDateTime lastModifiedTime) {
         this.studentName = studentName;
         this.studentId = studentId;
         this.studentPassword = studentPassword;
@@ -52,7 +50,6 @@ public class Student {
         this.studentEmail = studentEmail;
         this.buildTime = buildTime;
         this.lastModifiedTime = lastModifiedTime;
-        this.grades = grades;
     }
 
     //根据学号，更新学生的其他属性
@@ -129,14 +126,6 @@ public class Student {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public ArrayList<Grade> getGrades() {
-        return grades;
-    }
-
-    public void setGrades(ArrayList<Grade> grades) {
-        this.grades = grades;
-    }
-
     @Override
     public String toString() {
         return "[DEBUG] Student{" +
@@ -148,7 +137,6 @@ public class Student {
                 ", studentEmail='" + studentEmail + '\'' +
                 ", buildTime=" + buildTime +
                 ", lastModifiedTime=" + lastModifiedTime +
-                ", grades=" + grades +
                 '}';
     }
 
@@ -163,6 +151,7 @@ public class Student {
     }
 
     public String toStringLine(){
-        return studentId + " | " + studentClass + " " + studentName + " " + studentGender;
+        //return studentId + " | " + studentClass + " " + studentName + " " + studentGender;
+        return String.format("%-12s %-18s %-3s %-1s", studentId,studentClass,studentName,studentGender);
     }
 }
