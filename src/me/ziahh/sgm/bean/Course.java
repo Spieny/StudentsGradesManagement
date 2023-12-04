@@ -48,4 +48,9 @@ public class Course {
     public void setCourseDuration(double courseDuration) {
         this.courseDuration = courseDuration;
     }
+
+    public String toStringLine(){
+        return courseId + "|" + courseName + " " + courseScore + "分,学时:" + courseDuration + "h";
+    }
+
 }

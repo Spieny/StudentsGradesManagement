@@ -59,7 +59,7 @@ public class Student {
     private void updateStudent(){
         String year = this.studentId.substring(0,4);
         String clazz = this.studentId.substring(8,9);
-        this.studentClass = year + "级" + Utils.getStudentMajorById(studentId) + clazz + "班";
+        this.studentClass = year + "级 " + Utils.getStudentMajorById(studentId) + " " + clazz + "班";
         this.buildTime = LocalDateTime.now();
         this.lastModifiedTime = LocalDateTime.now();
         this.studentGender = Utils.getStudentGenderById(this.studentId);
@@ -139,7 +139,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "[DEBUG] Student{" +
                 "studentName='" + studentName + '\'' +
                 ", studentId='" + studentId + '\'' +
                 ", studentPassword='" + studentPassword + '\'' +
@@ -150,5 +150,19 @@ public class Student {
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", grades=" + grades +
                 '}';
+    }
+
+    public String toBasicInformation() {
+        return    "--------学生基本信息--------" + "\n"
+                + "姓名:" + studentName  + "\n"
+                + "性别:" + studentGender  + "\n"
+                + "班级:" + studentClass  + "\n"
+                + "学号:" + studentId + "\n"
+                + "邮箱：" + studentEmail + "\n"
+                + "-------------------------";
+    }
+
+    public String toStringLine(){
+        return studentId + " | " + studentClass + " " + studentName + " " + studentGender;
     }
 }

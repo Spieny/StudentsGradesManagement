@@ -70,4 +70,8 @@ public class Teacher {
                 + "任课：" + teachCoursesIds.size() + "\n"
                 + "------------------";
     }
+
+    public String toStringLine(){
+        return teacherId + "|" + teacherType + teacherName;
+    }
 }
