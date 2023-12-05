@@ -142,6 +142,14 @@ public class Utils {
         return null;
     }
 
+    public static boolean isLegalGender(String in){
+        char c = in.charAt(0);
+        if(c == '男' || c =='女'){
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 判断输入的邮箱格式是否正确
      * @param str 输入的邮箱地址
@@ -210,6 +218,21 @@ public class Utils {
         }
         return true;
     }
+
+    /**
+     * 验证密码是否安全
+     * @param pwd 密码
+     * @return 安全返回真，否则返回假
+     */
+    public static boolean isSafePassword(String pwd){
+        String regex = "^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$";
+        if (pwd.matches(regex)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * 分页查询，特别支持课程表，学生表的分页查询
@@ -306,7 +329,7 @@ public class Utils {
                 //逐一输出
                 int i = 1;
                 for (String s : r) {
-                    System.out.println(i + "." + s);
+                    System.out.println(i + ". " + s);
                     i++;
                 }
             }
@@ -343,18 +366,18 @@ public class Utils {
         //int command = -1;
         while (true){
             System.out.println();
-            System.out.println("-------------------- 第" + page + "页 --------------------");
+            System.out.println("--------------------- 第" + page + "页 ---------------------");
             //读取课程信息的字符串数组
             String[] r = Utils.pagedQuery(courses,5,page);
             if (r != null) {
                 //逐一输出
                 int i = 1;
                 for (String s : r) {
-                    System.out.println(i + "." + s);
+                    System.out.println(i + ". " + s);
                     i++;
                 }
             }
-            System.out.println("-------------------- 第" + page + "页 --------------------");
+            System.out.println("--------------------- 第" + page + "页 ---------------------");
             System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
             System.out.println("请输入你选择的课程的课程号：");
             String courseId = sc.next();
@@ -375,6 +398,49 @@ public class Utils {
                 System.out.println("你选择的课程不存在！");
             } else {
                 return c;
+            }
+        }
+        return null;
+    }
+
+    public static Student userChooseAStudent(){
+        ArrayList<Student> students = DataHandler.getStudents();
+        int page = 1;
+        //int command = -1;
+        while (true){
+            System.out.println();
+            System.out.println("-------------------- 第" + page + "页 ---------------------");
+            //读取学生信息的字符串数组
+            String[] r = Utils.pagedQuery(students,5,page);
+            if (r != null) {
+                //逐一输出
+                int i = 1;
+                for (String s : r) {
+                    System.out.println(i + ". " + s);
+                    i++;
+                }
+            }
+            System.out.println("--------------------- 第" + page + "页 ---------------------");
+            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
+            System.out.println("请输入你选择的学生的学号：");
+            String studentID = sc.next();
+            if (studentID.equals("2") && page < (students.size() / 5) + 1){
+                page++;
+                continue;//如果输入的是翻页指令，直接跳过下面的代码
+            }
+            if (studentID.equals("1") && page > 1){
+                page--;
+                continue;//如果输入的是翻页指令，直接跳过下面的代码
+            }
+            if (studentID.equals("0")){
+                System.out.println("退出查询......");
+                break;
+            }
+            Student s = (Student) Utils.getPersonById(studentID);
+            if (s == null){
+                System.out.println("你查找的学生不存在！");
+            } else {
+                return s;
             }
         }
         return null;

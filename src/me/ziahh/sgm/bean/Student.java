@@ -1,7 +1,9 @@
 package me.ziahh.sgm.bean;
 
+import me.ziahh.sgm.module.DataHandler;
 import me.ziahh.sgm.util.Utils;
 
+import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -19,6 +21,8 @@ public class Student {
     private LocalDateTime buildTime;
     //最后修改时间
     private LocalDateTime lastModifiedTime;
+    //密码错误次数
+    private int failToLoginTimes = 0;
 
     //学生的增加功能只能输入姓名，学号，邮箱。即其他信息由学号获取;
     public Student(String studentName, String studentId, String studentEmail) {
@@ -62,6 +66,14 @@ public class Student {
         this.studentGender = Utils.getStudentGenderById(this.studentId);
     }
 
+    public int getFailToLoginTimes() {
+        return failToLoginTimes;
+    }
+
+    public void setFailToLoginTimes(int failToLoginTimes) {
+        this.failToLoginTimes = failToLoginTimes;
+    }
+
     public String getStudentName() {
         return studentName;
     }
@@ -83,7 +95,7 @@ public class Student {
     }
 
     public void setStudentPassword(String studentPassword) {
-        this.studentPassword = studentPassword;
+        this.studentPassword = Utils.getMD5(studentPassword);
     }
 
     public char getStudentGender() {
@@ -153,5 +165,29 @@ public class Student {
     public String toStringLine(){
         //return studentId + " | " + studentClass + " " + studentName + " " + studentGender;
         return String.format("%-12s %-18s %-3s %-1s", studentId,studentClass,studentName,studentGender);
+    }
+
+    public String toGradesList(){
+        StringBuilder sb= new StringBuilder();
+        sb.append("-------- 学生" + studentName + "的成绩单 --------\n");
+        for(String s: getGradesStringList()){
+            sb.append(s).append("\n");
+        }
+        //绩点
+        sb.append("---------------------------------\n");
+        return sb.toString();
+    }
+
+    public ArrayList<String> getGradesStringList(){
+        ArrayList<String> gradesStringList = new ArrayList<>();
+        for(Grade g : DataHandler.getGrades()){
+            if (g.getStudentId().equals(studentId)){
+                String id = g.getCourseId();
+                Course c = Utils.getCourseById(id);
+                //我就不信他会爆空指针错误
+                gradesStringList.add(id + " " + c.getCourseName() + " " + g.getScore() + "分");
+            }
+        }
+        return gradesStringList;
     }
 }

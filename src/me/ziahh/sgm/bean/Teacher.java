@@ -15,6 +15,8 @@ public class Teacher {
     private TeacherType teacherType = TeacherType.TEACHER;
     private ArrayList<String> teachCoursesIds = new ArrayList<>();
 
+    private int failToLoginTimes = 0;
+
     public Teacher(String teacherName, String teacherPassword, TeacherType teacherType) {
         this.teacherName = teacherName;
         this.teacherType = teacherType;
@@ -24,6 +26,14 @@ public class Teacher {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public int getFailToLoginTimes() {
+        return failToLoginTimes;
+    }
+
+    public void setFailToLoginTimes(int failToLoginTimes) {
+        this.failToLoginTimes = failToLoginTimes;
     }
 
     public Teacher() {

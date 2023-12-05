@@ -1,9 +1,6 @@
 package me.ziahh.sgm.module;
 
-import me.ziahh.sgm.bean.Course;
-import me.ziahh.sgm.bean.Grade;
-import me.ziahh.sgm.bean.Student;
-import me.ziahh.sgm.bean.Teacher;
+import me.ziahh.sgm.bean.*;
 import me.ziahh.sgm.util.Utils;
 
 import javax.xml.crypto.Data;
@@ -56,7 +53,7 @@ public class AdminServiceFrame {
                     changePassword();
                     break;
                 case "0":
-                    System.out.println("===退出成绩管理系统===");
+                    System.out.println("退出成绩管理系统");
                     quitFlag = true;
                     break;
                 default:
@@ -155,7 +152,7 @@ public class AdminServiceFrame {
                     if(Utils.isLegalScore(score)){
                         realScore = Double.parseDouble(score);
                         Grade grade = new Grade(c.getCourseId(),s.getStudentId(),realScore,Grade.getGradeLevelByScore(realScore));
-                        System.out.println(grade);
+                        //System.out.println(grade);
                         DataHandler.getGrades().add(grade);
                         break;
                     } else {
@@ -218,7 +215,7 @@ public class AdminServiceFrame {
             System.out.println("         b. 删除教师");
             System.out.println("         c. 修改教师");
             System.out.println("         d. 查询教师");
-            System.out.println("         e. 教师选课");
+            System.out.println("         e. 教师选课退课");
             System.out.println("         0. 退出系统");
             System.out.println("=============================");
             System.out.println(" 请输入指令：");
@@ -252,7 +249,6 @@ public class AdminServiceFrame {
         }
         flag = false;
     }
-
     //教师选课
     private void teacherChooseCourse() {
         while (true){
@@ -294,6 +290,87 @@ public class AdminServiceFrame {
     }
 
     private void modifyTeacher() {
+        while (true){
+            Teacher teacher = Utils.userChooseATeacher();
+            //返回null说明用户选择退出
+            if (teacher==null){
+                break;}
+            System.out.println(teacher);
+            //是否已经修改了信息
+            boolean isEdited = false;
+            //是否退出
+            boolean isQuit = false;
+            while (true){
+                if(isQuit){
+                    return;
+                }
+                String command;
+                String value;
+                System.out.println("输入 name 修改教师姓名");
+                System.out.println("输入 pwd 修改教师密码");
+                System.out.println("输入 type 修改教师权限类型");
+                System.out.println("输入 unban 解冻账号");
+                System.out.println("输入 quit 退出修改");
+                command = sc.next();
+                switch (command){
+                    case "unban":
+                        teacher.setFailToLoginTimes(0);
+                        System.out.println("解冻账号成功！");
+                        break;
+                    case "quit":
+                        isQuit = true;
+                        break;
+                    case "type":
+                        while (true){
+                            boolean isOk = false;
+                            if (teacher.getTeacherType() == TeacherType.TEACHER){
+                                System.out.println("将账号权限修改为：" + TeacherType.ADMIN + "吗？(y/n)");
+                            } else {
+                                System.out.println("将账号权限修改为：" + TeacherType.TEACHER + "吗？(y/n)");
+                            }
+                            value = sc.next();
+                            switch (value){
+                                case "y":
+                                    isEdited = true;
+                                    isOk = true;
+                                    if (teacher.getTeacherType() == TeacherType.TEACHER){
+                                        teacher.setTeacherType(TeacherType.ADMIN);
+                                    } else {
+                                        teacher.setTeacherType(TeacherType.TEACHER);
+                                    }
+                                    break;
+                                case "n":
+                                    isOk = true;
+                                    System.out.println("取消操作");
+                                    break;
+                                default:
+                                    System.out.println("指令错误！");
+                            }
+                            if (isOk){break;}
+                        }
+                    case "pwd":
+                        isEdited = true;
+                        while (true){
+                            System.out.println("将密码修改为：");
+                            value = sc.next();
+                            if (Utils.isSafePassword(value)){
+                                //设置密码，Student对象会自动转换为MD5文本
+                                teacher.setTeacherPassword(value);
+                                break;
+                            } else {
+                                System.out.println("密码不安全，请重试！");
+                            }
+                        }
+                        break;
+                    default:
+                        System.out.println("未知指令，请重试！");
+                }
+                if (isEdited){
+                    System.out.println("修改完成！教师信息如下：");
+                    System.out.println(teacher);
+                }
+            }
+        }
     }
 
     private void deleteTeacher() {
@@ -344,7 +421,7 @@ public class AdminServiceFrame {
             System.out.println("请输入教师的账号密码：");
             String password = sc.next();
             //使用正则表达式验证密码安全性 字母数字组合，长度不低于8
-            if(password.matches("^[A-Za-z][0-9]{8,16}")){
+            if(Utils.isSafePassword(password)){
                 teacher.setTeacherPassword(Utils.getMD5(password));
                 break;
             } else {
@@ -397,7 +474,6 @@ public class AdminServiceFrame {
                 break;
             }
         }
-        flag = false;
     }
 
     private void queryCourse() {
@@ -454,8 +530,7 @@ public class AdminServiceFrame {
     /*      course field end        */
 
     private void studentOpearateMenu() {
-        boolean flag = false;
-        while (!flag){
+        while (true) {
             System.out.println("====> 管理员界面 学生子菜单 <====");
             System.out.println("         a. 添加学生");
             System.out.println("         b. 删除学生");
@@ -465,116 +540,148 @@ public class AdminServiceFrame {
             System.out.println("=============================");
             System.out.println(" 请输入指令：");
             String in = sc.next();
-            switch (in){
+            switch (in) {
                 case "a":
-                    //
                     addStudent();
                 case "b":
-                    //
                     deleteStudent();
                     break;
                 case "c":
-                    //
                     modifyStudent();
                     break;
                 case "d":
-                    //
                     queryStudent();
                     break;
                 case "0":
-                    flag = true;
-                    break;
+                    return;
 
             }
-            if (flag){
-                break;
-            }
         }
-        flag = false;
     }
 
     private void queryStudent() {
-        ArrayList<Student> students = DataHandler.getStudents();
-        int page = 1;
-        //int command = -1;
         while (true){
+            Student student = Utils.userChooseAStudent();
+            //返回null说明用户选择退出
+            if (student==null){
+                break;}
+            System.out.println(student.toBasicInformation());
             System.out.println();
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            //读取学生信息的字符串数组
-            String[] r = Utils.pagedQuery(students,5,page);
-            if (r != null) {
-                //逐一输出
-                int i = 1;
-                for (String s : r) {
-                    System.out.println(i + "." + s);
-                    i++;
-                }
-            }
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
-            String studentID = sc.next();
-            if (studentID.equals("2") && page < (students.size() / 5) + 1){
-                page++;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (studentID.equals("1") && page > 1){
-                page--;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (studentID.equals("0")){
-                System.out.println("退出查询......");
-                break;
-            }
-            Student s = (Student) Utils.getPersonById(studentID);
-            if (s == null){
-                System.out.println("你查找的学生不存在！");
-            } else {
-                System.out.println(s);
-            }
+            System.out.println(student.toGradesList());
+            System.out.println("输入任意字符继续......");
+            sc.next();
         }
     }
 
     private void modifyStudent() {
+        while (true){
+            Student student = Utils.userChooseAStudent();
+            //返回null说明用户选择退出
+            if (student==null){
+                break;}
+            System.out.println(student.toBasicInformation());
+            //是否已经修改了信息
+            boolean isEdited = false;
+            //是否退出
+            boolean isQuit = false;
+            while (true){
+                if(isQuit){
+                    return;
+                }
+                String command;
+                String value;
+                System.out.println("输入 name 修改学生姓名");
+                System.out.println("输入 pwd 修改学生密码");
+                System.out.println("输入 gender 修改学生性别");
+                System.out.println("输入 email 修改学生邮箱");
+                System.out.println("输入 unban 解冻学生");
+                System.out.println("输入 quit 退出修改");
+                command = sc.next();
+                switch (command){
+                    case "unban":
+                        student.setFailToLoginTimes(0);
+                        System.out.println("解冻学生成功！");
+                        break;
+                    case "quit":
+                        isQuit = true;
+                        break;
+                    case "name":
+                        isEdited = true;
+                        System.out.println("将学生姓名修改为：");
+                        value = sc.next();
+                        student.setStudentName(value);
+                        break;
+                    case "gender":
+                        isEdited = true;
+                        while (true){
+                            System.out.println("将学生性别修改为：");
+                            value = sc.next();
+                            if (Utils.isLegalGender(value)){
+                                student.setStudentGender(value.charAt(0));
+                                break;
+                            } else {
+                                System.out.println("性别不合法，请重试！");
+                            }
+                        }
+                        break;
+                    case "email":
+                        isEdited = true;
+                        while (true){
+                            System.out.println("将学生邮箱修改为：");
+                            value = sc.next();
+                            if (Utils.isMail(value)){
+                                student.setStudentEmail(value);
+                                break;
+                            } else {
+                                System.out.println("邮箱格式错误，请重试！");
+                            }
+                        }
+                        break;
+                    case "pwd":
+                        isEdited = true;
+                        while (true){
+                            System.out.println("将学生密码修改为：");
+                            value = sc.next();
+                            if (Utils.isSafePassword(value)){
+                                //设置密码，Student对象会自动转换为MD5文本
+                                student.setStudentPassword(value);
+                                break;
+                            } else {
+                                System.out.println("密码不安全，请重试！");
+                            }
+                        }
+                        break;
+                    default:
+                        System.out.println("未知指令，请重试！");
+                }
+                if (isEdited){
+                    System.out.println("修改完成！学生信息如下：");
+                    System.out.println(student.toBasicInformation());
+                }
+            }
+        }
     }
 
     private void deleteStudent() {
-        int page = 1;
-        //int command = -1;
         while (true){
-            ArrayList<Student> students = DataHandler.getStudents();
-            System.out.println();
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            String[] r = Utils.pagedQuery(students,5,page);
-            if (r != null) {
-                //逐一输出
-                int i = 1;
-                for (String s : r) {
-                    System.out.println(i + "." + s);
-                    i++;
+            Student student = Utils.userChooseAStudent();
+            //返回null说明用户选择退出
+            if (student==null){
+                break;}
+            System.out.println("你确定要删除学生：" + student.getStudentName() + "吗？");
+            //二次确认操作
+            while (true){
+                String command = sc.next();
+                if (command.equals("y")){
+                    DataHandler.getStudents().remove(student);
+                    System.out.println("删除成功！");
+                    break;
+                } else if (command.equals("n")){
+                    System.out.println("已取消操作。");
+                    break;
+                } else {
+                    System.out.println("指令错误，请重新输入。");
                 }
-            }
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出界面");
-            System.out.println("输入学号（序号）删除学生");
-            String courseId = sc.next();
-            if (courseId.equals("2") && page < (students.size() / 5) + 1){
-                page++;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("1") && page > 1){
-                page--;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("0")){
-                System.out.println("退出查询......");
-                break;
-            }
-            Student c = (Student) Utils.getPersonById(courseId);
-            if (c == null){
-                System.out.println("你选择的教师不存在！");
-            } else {
-                System.out.println("已删除学生" + c.getStudentName() + "(" + c.getStudentId() + ")");
-                DataHandler.getTeachers().remove(c);
             }
         }
     }
@@ -611,7 +718,7 @@ public class AdminServiceFrame {
         Student student = new Student(name,id,email);
 
         DataHandler.getStudents().add(student);
-        System.out.println("添加学生成功！\n" + student.toString());
+        System.out.println("添加学生成功！\n" + student.toBasicInformation());
     }
 
 }

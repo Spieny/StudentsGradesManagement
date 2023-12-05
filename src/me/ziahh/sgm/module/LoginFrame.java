@@ -93,11 +93,16 @@ public class LoginFrame {
             if (person != null){
                 //教师登录
                 if (person instanceof Teacher teacher){
+                    //将输入的密码用MD5算法转换为字符串
                     try{
-                        //将输入的密码用MD5算法转换为字符串
                         decodedPassword = Utils.getMD5(password);
                     } catch (Exception e){
                         e.printStackTrace();
+                    }
+                    //验证账号是否被冻结
+                    if (teacher.getFailToLoginTimes() == 3){
+                        System.out.println("该账号已经被冻结，请联系管理员");
+                        continue;
                     }
                     //MD5密码校验
                     if (Objects.equals(decodedPassword, teacher.getTeacherPassword())){
@@ -111,6 +116,7 @@ public class LoginFrame {
 
                     } else {
                         System.out.println("工号或密码不正确，请重试！");
+                        teacher.setFailToLoginTimes(teacher.getFailToLoginTimes() + 1);
                     }
                 }
                 //学生登录
@@ -120,6 +126,11 @@ public class LoginFrame {
                         } catch (Exception e){
                             e.printStackTrace();
                         }
+                        //验证账号是否被冻结
+                        if (student.getFailToLoginTimes() == 3){
+                            System.out.println("该账号已经被冻结，请联系管理员");
+                            continue;
+                        }
                         //MD5密码校验
                         if (Objects.equals(decodedPassword, student.getStudentPassword())){
                             System.out.println("登录成功！");
@@ -127,6 +138,7 @@ public class LoginFrame {
                             enterStudentFrame(student);
                         } else {
                             System.out.println("学号或密码不正确，请重试！");
+                            student.setFailToLoginTimes(student.getFailToLoginTimes() + 1);
                         }
 
                     }
