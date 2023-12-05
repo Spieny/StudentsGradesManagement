@@ -1,6 +1,7 @@
 package me.ziahh.sgm.module;
 
 import me.ziahh.sgm.bean.Course;
+import me.ziahh.sgm.bean.Grade;
 import me.ziahh.sgm.bean.Student;
 import me.ziahh.sgm.bean.Teacher;
 
@@ -17,6 +18,7 @@ public class DataHandler {
     private static ArrayList<Student> students = new ArrayList<>();
     private static ArrayList<Teacher> teachers = new ArrayList<>();
     private static ArrayList<Course> courses = new ArrayList<>();
+    private static ArrayList<Grade> grades = new ArrayList<>();
 
     //private ArrayList<Student> grades = new ArrayList<>();
 
@@ -51,6 +53,14 @@ public class DataHandler {
         } catch (Exception e) {
             System.out.println("读取本地数据失败:" + e.getMessage());
         }
+    }
+
+    public static ArrayList<Grade> getGrades() {
+        return grades;
+    }
+
+    public static void setGrades(ArrayList<Grade> grades) {
+        DataHandler.grades = grades;
     }
 
     public static ArrayList<Student> getStudents() {

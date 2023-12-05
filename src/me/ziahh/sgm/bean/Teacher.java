@@ -62,16 +62,41 @@ public class Teacher {
         this.teacherType = teacherType;
     }
 
+    public ArrayList<String> getTeachCoursesIds() {
+        return teachCoursesIds;
+    }
+
+    public void setTeachCoursesIds(ArrayList<String> teachCoursesIds) {
+        this.teachCoursesIds = teachCoursesIds;
+    }
+
     @Override
     public String toString() {
-        return "----教师基本信息----" + "\n"
+        return "--------教师基本信息--------" + "\n"
                 + "姓名:" + teacherName  + "\n"
                 + "工号:" + teacherId + "\n"
-                + "任课：" + teachCoursesIds.size() + "\n"
-                + "------------------";
+                + "          -任课-         \n"
+                + getStringOfTeachCourses()
+                + "--------------------------";
     }
 
     public String toStringLine(){
-        return teacherId + "|" + teacherType + teacherName;
+        return teacherId + " | " + teacherType + " " +teacherName;
+    }
+
+    public String getStringOfTeachCourses(){
+        StringBuilder coursesString = new StringBuilder();
+        if (teachCoursesIds.isEmpty()){
+            return "    该教师暂无教授任何课程\n";
+        }
+        for(String c : teachCoursesIds){
+            Course course = Utils.getCourseById(c);
+            if (c != null){
+                coursesString.append("    ");
+                coursesString.append(course.getCourseId() + " " +course.getCourseName());
+                coursesString.append("\n");
+            }
+        }
+        return coursesString.toString();
     }
 }

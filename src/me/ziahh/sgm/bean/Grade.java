@@ -63,4 +63,14 @@ public class Grade {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Grade{" +
+                "courseId='" + courseId + '\'' +
+                ", studentId='" + studentId + '\'' +
+                ", score=" + score +
+                ", gradeLevel=" + gradeLevel +
+                '}';
+    }
 }

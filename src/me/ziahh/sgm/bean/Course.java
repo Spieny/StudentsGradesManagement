@@ -1,5 +1,7 @@
 package me.ziahh.sgm.bean;
 
+import me.ziahh.sgm.module.DataHandler;
+
 public class Course {
 
     private String courseId;
@@ -10,8 +12,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String courseId, String courseName, double courseScore, double courseDuration) {
-        this.courseId = courseId;
+    public Course(String courseName, double courseScore, double courseDuration) {
+        this.courseId = "c" + String.valueOf(DataHandler.getCourses().size() + 10000);
         this.courseName = courseName;
         this.courseScore = courseScore;
         this.courseDuration = courseDuration;
@@ -50,7 +52,7 @@ public class Course {
     }
 
     public String toStringLine(){
-        return courseId + "|" + courseName + " " + courseScore + "分,学时:" + courseDuration + "h";
+        return courseId + " | " + courseName + " " + courseScore + "分,学时:" + courseDuration + "h";
     }
 
 }

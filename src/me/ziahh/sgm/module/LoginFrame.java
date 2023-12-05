@@ -1,5 +1,6 @@
 package me.ziahh.sgm.module;
 
+import me.ziahh.sgm.bean.Course;
 import me.ziahh.sgm.bean.Student;
 import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.bean.TeacherType;
@@ -66,6 +67,11 @@ public class LoginFrame {
         //教师测试
         DataHandler.getTeachers().add(new Teacher("潘子","admin",TeacherType.ADMIN));
         DataHandler.getTeachers().add(new Teacher("老寒雪","123456",TeacherType.TEACHER));
+
+        DataHandler.getCourses().add(new Course("C++程序设计基础",2,16));
+        DataHandler.getCourses().add(new Course("Java程序设计",2,16));
+        DataHandler.getCourses().add(new Course("计算机组成原理",4,18));
+        DataHandler.getCourses().add(new Course("数据库原理",1.5,12));
     }
 
     private void login(){
