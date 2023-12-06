@@ -3,9 +3,10 @@ package me.ziahh.sgm.bean;
 import me.ziahh.sgm.module.DataHandler;
 import me.ziahh.sgm.util.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Teacher {
+public class Teacher implements Serializable {
 
     private String teacherName;
     //约定教师的工号长度为四位数

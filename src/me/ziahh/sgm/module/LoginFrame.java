@@ -20,15 +20,6 @@ public class LoginFrame {
 
     public void run(){
         boolean flag = false;
-        initInitialTestData();
-        for(Student s:DataHandler.getStudents()){
-            System.out.println(s.toString());
-        }
-        System.out.println("--------------------");
-        for(Teacher t:DataHandler.getTeachers()){
-            System.out.println(t.toString());
-        }
-
         while (true){
             System.out.println();
             System.out.println("=========> 广东原友大学成绩管理系统 <==========");
@@ -55,7 +46,7 @@ public class LoginFrame {
         }
     }
 
-    //注入一些测试用的数据，版本完成后删除
+    /*注入一些测试用的数据，版本完成后删除
     private void initInitialTestData(){
         //学生测试
         DataHandler.getStudents().add(new Student("张三","202000014126","zhangsan@163.com"));
@@ -74,7 +65,7 @@ public class LoginFrame {
         DataHandler.getGrades().add(new Grade("c10001","202000054031",93,GradeLevel.EXCELLENT));
         DataHandler.getGrades().add(new Grade("c10002","202000054031",81,GradeLevel.GOOD));
         DataHandler.getGrades().add(new Grade("c10003","202000054031",70,GradeLevel.PASS));
-    }
+    }*/
 
     private void login(){
         boolean isLogined = false;

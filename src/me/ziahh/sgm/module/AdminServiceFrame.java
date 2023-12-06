@@ -22,6 +22,7 @@ public class AdminServiceFrame {
     }
 
     public void start(){
+        DataHandler.saveAllData();
         System.out.println("欢迎您，管理员:" + currentLoginedTeacher.getTeacherName());
         while(!quitFlag){
             //DataWriter.writeAll();
@@ -53,7 +54,8 @@ public class AdminServiceFrame {
                     changePassword();
                     break;
                 case "0":
-                    System.out.println("退出成绩管理系统");
+                    //退出的时候保存数据
+                    DataHandler.saveAllData();
                     quitFlag = true;
                     break;
                 default:
@@ -88,7 +90,7 @@ public class AdminServiceFrame {
                     System.out.println(s);
                 }
             }
-            System.out.println("-------------------- 第" + page + "页 --------------------");
+            System.out.println("------------------------ 第" + page + "页 ------------------------");
             System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
             String courseId = sc.next();
             if (courseId.equals("2") && page < (courses.size() / 5) + 1){
@@ -116,21 +118,25 @@ public class AdminServiceFrame {
                 System.out.println();
                 System.out.println("--------------------- "+c.getCourseName()+",请选择学生 ---------------------");
                 //读取学生信息的字符串数组
+                ArrayList<Student> pagedStudents = new ArrayList<>();
                 String[] st = Utils.pagedQuery(students,5,page2nd);
                 if (st != null) {
+                    int i = 1;
                     //逐一输出
                     for (String s : st) {
-                        System.out.println(s);
+                        pagedStudents.add((Student)Utils.getPersonById(s.substring(0,12)));
+                        System.out.println(i + ". " + s);
+                        i++;
                     }
                 }
                 System.out.println("--------------------------- 第" + page2nd + "页 --------------------------------");
-                System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
+                System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询 | 输入对应学生前的编号以确认");
                 String studentID = sc.next();
-                if (studentID.equals("2") && page2nd < (students.size() / 5) + 1){
+                if (studentID.equals("a") && page2nd < (students.size() / 5) + 1){
                     page2nd++;
                     continue;//如果输入的是翻页指令，直接跳过下面的代码
                 }
-                if (studentID.equals("1") && page2nd > 1){
+                if (studentID.equals("d") && page2nd > 1){
                     page2nd--;
                     continue;//如果输入的是翻页指令，直接跳过下面的代码
                 }
@@ -139,7 +145,15 @@ public class AdminServiceFrame {
                     break;
                 }
                 //要管理的学生对象s
-                Student s = (Student) Utils.getPersonById(studentID);
+                //Student s = (Student) Utils.getPersonById(studentID);
+                Student s = null;
+                //防止爆数组
+                try{
+                    s = pagedStudents.get(Integer.parseInt(studentID)-1);
+                } catch (Exception e){
+                    System.out.println("你查找的学生不存在!");
+                    continue;
+                }
                 if (s == null){
                     System.out.println("你查找的学生不存在！");
                     continue;
@@ -459,18 +473,15 @@ public class AdminServiceFrame {
             String in = sc.next();
             switch (in){
                 case "a":
-                    //
                     addCourse();
+                    break;
                 case "b":
-                    //
                     deleteCourse();
                     break;
                 case "c":
-                    //
                     modifyCourse();
                     break;
                 case "d":
-                    //
                     queryCourse();
                     break;
                 case "0":
@@ -648,7 +659,6 @@ public class AdminServiceFrame {
         System.out.println("课程添加成功！");
         Course course = new Course(courseName,courseScore,courseDuration);
         DataHandler.getCourses().add(course);
-        System.out.println();
     }
 
     /*      course field end        */

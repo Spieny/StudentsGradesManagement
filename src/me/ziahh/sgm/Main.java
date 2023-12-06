@@ -7,8 +7,7 @@ import me.ziahh.sgm.util.Utils;
 public class Main {
 
     public static void main(String[] args){
-        DataHandler dataHandler = new DataHandler();
-        dataHandler.readAllData();
+        DataHandler.readAllData();
 
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.run();

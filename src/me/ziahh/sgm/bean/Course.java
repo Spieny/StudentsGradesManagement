@@ -2,7 +2,9 @@ package me.ziahh.sgm.bean;
 
 import me.ziahh.sgm.module.DataHandler;
 
-public class Course {
+import java.io.Serializable;
+
+public class Course implements Serializable {
 
     private String courseId;
     private String courseName;

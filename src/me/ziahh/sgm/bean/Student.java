@@ -4,13 +4,14 @@ import me.ziahh.sgm.module.DataHandler;
 import me.ziahh.sgm.util.Utils;
 
 import javax.xml.crypto.Data;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Student {
+public class Student implements Serializable {
 
     private String studentName;
     private String studentId;
@@ -156,13 +157,13 @@ public class Student {
     }
 
     public String toBasicInformation() {
-        return    "--------学生基本信息--------" + "\n"
+        return    "----------学生基本信息----------" + "\n"
                 + "姓名:" + studentName  + "\n"
                 + "性别:" + studentGender  + "\n"
                 + "班级:" + studentClass  + "\n"
                 + "学号:" + studentId + "\n"
                 + "邮箱：" + studentEmail + "\n"
-                + "-------------------------";
+                + "-----------------------------";
     }
 
     public String toStringLine(){

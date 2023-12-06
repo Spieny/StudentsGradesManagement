@@ -1,6 +1,8 @@
 package me.ziahh.sgm.bean;
 
-public class Grade {
+import java.io.Serializable;
+
+public class Grade implements Serializable {
     private String courseId;
     private String studentId;
     private double score;

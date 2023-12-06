@@ -20,35 +20,52 @@ public class DataHandler {
     private static ArrayList<Course> courses = new ArrayList<>();
     private static ArrayList<Grade> grades = new ArrayList<>();
 
-    //private ArrayList<Student> grades = new ArrayList<>();
+    public DataHandler(){
+        readAllData();
+    }
 
-    public void saveAllData(){
+    public static void saveAllData(){
         try (ObjectOutputStream studentsStream = new ObjectOutputStream(new FileOutputStream("src/students.txt"));
              ObjectOutputStream coursesStream = new ObjectOutputStream(new FileOutputStream("src/courses.txt"));
-             ObjectOutputStream teachersStream = new ObjectOutputStream(new FileOutputStream("src/teachers.txt"))) {
+             ObjectOutputStream teachersStream = new ObjectOutputStream(new FileOutputStream("src/teachers.txt"));
+             ObjectOutputStream gradesStream = new ObjectOutputStream(new FileOutputStream("src/grades.txt"))){
 
             studentsStream.writeObject(students);
+            System.out.println("已写入 " + students.size() + " 条学生数据至本地");
             teachersStream.writeObject(teachers);
+            System.out.println("已写入 " + teachers.size() + " 条教师数据至本地");
             coursesStream.writeObject(courses);
+            System.out.println("已写入 " + courses.size() + " 条课程数据至本地");
+            gradesStream.writeObject(grades);
+            System.out.println("已写入 " + grades.size() + " 条成绩数据至本地");
 
-            System.out.println("已保存所有数据至本地");
+            System.out.println("成功保存所有数据至本地");
         } catch (IOException e) {
             System.out.println("本地数据写入失败:" + e.getMessage());
         }
     }
 
-    public void readAllData(){
+    public static void readAllData(){
         try (ObjectInputStream studentsStream = new ObjectInputStream(new FileInputStream("src/students.txt"));
              ObjectInputStream coursesStream = new ObjectInputStream(new FileInputStream("src/courses.txt"));
-             ObjectInputStream teachersStream = new ObjectInputStream(new FileInputStream("src/teachers.txt"))
+             ObjectInputStream teachersStream = new ObjectInputStream(new FileInputStream("src/teachers.txt"));
+             ObjectInputStream gradesStream = new ObjectInputStream(new FileInputStream("src/grades.txt"))
         ) {
             ArrayList<Student> inputStudents = (ArrayList<Student>) studentsStream.readObject();
-            ArrayList<Course> inputCourses = (ArrayList<Course>) coursesStream.readObject();
+            System.out.println("已读取学生数据 " + inputStudents.size() + " 条");
             ArrayList<Teacher> inputTeachers = (ArrayList<Teacher>) teachersStream.readObject();
+            System.out.println("已读取教师数据 " + inputTeachers.size() + " 条");
+            ArrayList<Course> inputCourses = (ArrayList<Course>) coursesStream.readObject();
+            System.out.println("已读取课程数据 " + inputCourses.size() + " 条");
+            ArrayList<Grade> inputGrades = (ArrayList<Grade>) gradesStream.readObject();
+            System.out.println("已读取成绩数据 " + inputGrades.size() + " 条");
+
             courses = inputCourses;
             students = inputStudents;
             teachers = inputTeachers;
-            System.out.println("已成功读取本地数据");
+            grades = inputGrades;
+
+            System.out.println("读取本地数据完毕");
 
         } catch (Exception e) {
             System.out.println("读取本地数据失败:" + e.getMessage());

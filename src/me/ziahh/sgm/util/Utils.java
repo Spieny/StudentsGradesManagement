@@ -233,6 +233,10 @@ public class Utils {
         }
     }
 
+    public static boolean isStudentChosenSpecificCourse(Student stu,Course cur){
+        return false;
+    }
+
 
     /**
      * 分页查询，特别支持课程表，学生表的分页查询
