@@ -1,9 +1,6 @@
 package me.ziahh.sgm.module;
 
-import me.ziahh.sgm.bean.Course;
-import me.ziahh.sgm.bean.Student;
-import me.ziahh.sgm.bean.Teacher;
-import me.ziahh.sgm.bean.TeacherType;
+import me.ziahh.sgm.bean.*;
 import me.ziahh.sgm.util.Utils;
 
 import java.util.Objects;
@@ -67,11 +64,16 @@ public class LoginFrame {
         //教师测试
         DataHandler.getTeachers().add(new Teacher("潘子","admin",TeacherType.ADMIN));
         DataHandler.getTeachers().add(new Teacher("老寒雪","123456",TeacherType.TEACHER));
-
+        //课程
         DataHandler.getCourses().add(new Course("C++程序设计基础",2,16));
         DataHandler.getCourses().add(new Course("Java程序设计",2,16));
         DataHandler.getCourses().add(new Course("计算机组成原理",4,18));
         DataHandler.getCourses().add(new Course("数据库原理",1.5,12));
+        //成绩
+        DataHandler.getGrades().add(new Grade("c10000","202000054031",85,GradeLevel.GOOD));
+        DataHandler.getGrades().add(new Grade("c10001","202000054031",93,GradeLevel.EXCELLENT));
+        DataHandler.getGrades().add(new Grade("c10002","202000054031",81,GradeLevel.GOOD));
+        DataHandler.getGrades().add(new Grade("c10003","202000054031",70,GradeLevel.PASS));
     }
 
     private void login(){

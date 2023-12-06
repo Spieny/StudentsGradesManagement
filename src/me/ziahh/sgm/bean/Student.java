@@ -6,6 +6,9 @@ import me.ziahh.sgm.util.Utils;
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Student {
 
@@ -167,17 +170,25 @@ public class Student {
         return String.format("%-12s %-18s %-3s %-1s", studentId,studentClass,studentName,studentGender);
     }
 
+    /**
+     * 返回可以直接打印出来的多行字符串，代表学生的成绩单
+     * @return
+     */
     public String toGradesList(){
         StringBuilder sb= new StringBuilder();
-        sb.append("-------- 学生" + studentName + "的成绩单 --------\n");
+        sb.append("------------ 学生" + studentName + "的成绩单 ------------\n");
         for(String s: getGradesStringList()){
             sb.append(s).append("\n");
         }
-        //绩点
-        sb.append("---------------------------------\n");
+        sb.append("绩点：").append(String.format("%.2f",getGPA())).append(" ,总修学时：").append(getTime()).append("小时\n");
+        sb.append("---------------------------------------\n");
         return sb.toString();
     }
 
+    /**
+     * 获得一个考生成绩字符串的List
+     * @return
+     */
     public ArrayList<String> getGradesStringList(){
         ArrayList<String> gradesStringList = new ArrayList<>();
         for(Grade g : DataHandler.getGrades()){
@@ -185,9 +196,117 @@ public class Student {
                 String id = g.getCourseId();
                 Course c = Utils.getCourseById(id);
                 //我就不信他会爆空指针错误
-                gradesStringList.add(id + " " + c.getCourseName() + " " + g.getScore() + "分");
+                gradesStringList.add(id + " " + c.getCourseName() + " " + String.format("%.1f",g.getScore()) + "分");
             }
         }
         return gradesStringList;
+    }
+
+    /**
+     * 获取学生的成绩HashMap，key为课程id,value为成绩分数
+     * @return
+     */
+    public HashMap<String,Double> getScoreToCourse(){
+        HashMap<String,Double> scoreToCourse = new HashMap<>();
+        for(Grade g : DataHandler.getGrades()){
+            if (g.getStudentId().equals(studentId)){
+                String id = g.getCourseId();
+                Course c = Utils.getCourseById(id);
+                scoreToCourse.put(c.getCourseId(),g.getScore());
+            }
+        }
+        return scoreToCourse;
+    }
+
+    /**
+     * 获取学生的成绩HashMap，key为课程id,value为这们课对应的学时
+     * @return
+     */
+    public HashMap<String,Double> getDurationToCourse(){
+        HashMap<String,Double> durationToCourse = new HashMap<>();
+        for(Grade g:DataHandler.getGrades()){
+            if (g.getStudentId().equals(studentId)){
+                durationToCourse.put(g.getCourseId(), Objects.requireNonNull(Utils.getCourseById(g.getCourseId())).getCourseDuration());
+            }
+        }
+        return durationToCourse;
+    }
+
+    /**
+     * 获取学生的成绩HashMap，key为课程id,value为这们课对应的学分
+     * @return
+     */
+    public HashMap<String,Double> getCourseScoreToCourse(){
+        HashMap<String,Double> csToCourse = new HashMap<>();
+        for(Course c: DataHandler.getCourses()){
+            csToCourse.put(c.getCourseId(),c.getCourseScore());
+        }
+        return csToCourse;
+    }
+
+    /**
+     * 获取学生的总学分
+     */
+    public double getTotalCourseScore(){
+        double total = 0;
+        for(Grade g : DataHandler.getGrades()){
+            if (g.getStudentId().equals(studentId)){
+                String id = g.getCourseId();
+                Course c = Utils.getCourseById(id);
+                total += c.getCourseScore();
+            }
+        }
+        return total;
+    }
+
+
+    /**
+     * 计算学生的GPA
+     */
+    public double getGPA(){
+        double gpa = 0;
+        //共修学时
+        HashMap<String, Double> map = getScoreToCourse();
+        for (Map.Entry<String,Double> entry : map.entrySet()) {
+            Course c = Utils.getCourseById(entry.getKey());
+            if (c != null) {
+                //处理，防止绩点变成负数
+               double var = entry.getValue() - 50;
+               if (var < 0){var=0;}
+
+               gpa+=(var / 10.0) * c.getCourseScore();
+
+            }
+        }
+        gpa = gpa / getTotalCourseScore();
+        return gpa;
+    }
+
+    /**
+     * 计算学生的总学时
+     * @return
+     */
+    public double getTime(){
+        double time = 0;
+        //共修学时
+        HashMap<String, Double> map = getDurationToCourse();
+        for (Map.Entry<String,Double> entry : map.entrySet()) {
+            time+=entry.getValue();
+        }
+        return time;
+    }
+
+    /**
+     * 获取学生某门课的成绩对象
+     * @param courseId
+     * @return
+     */
+    public Grade getSpecificGradeOfStudent(String courseId){
+        for(Grade g : DataHandler.getGrades()){
+            if (g.getCourseId().equals(courseId)){
+                return g;
+            }
+        }
+        return null;
     }
 }

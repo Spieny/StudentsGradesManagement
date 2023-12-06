@@ -55,4 +55,14 @@ public class Course {
         return courseId + " | " + courseName + " " + courseScore + "分,学时:" + courseDuration + "h";
     }
 
+    @Override
+    public String toString(){
+        return "-------课程基本信息-------" + "\n" +
+                "课程名称： " + courseName + "\n" +
+                "课程id： " + courseId + "\n" +
+                "课程学分：" + courseScore + " 分\n" +
+                "课程学时：" + courseDuration + " 时\n" +
+                "------------------------";
+    }
+
 }

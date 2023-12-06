@@ -151,6 +151,14 @@ public class AdminServiceFrame {
                     double realScore = 0;
                     if(Utils.isLegalScore(score)){
                         realScore = Double.parseDouble(score);
+
+                        //如果成绩已存在，替换原有的成绩
+                        Grade oldGrade= s.getSpecificGradeOfStudent(c.getCourseId());
+                        if (oldGrade != null){
+                            DataHandler.getGrades().remove(oldGrade);
+                            System.out.println("修改学生的分数为：" + realScore);
+                        }
+
                         Grade grade = new Grade(c.getCourseId(),s.getStudentId(),realScore,Grade.getGradeLevelByScore(realScore));
                         //System.out.println(grade);
                         DataHandler.getGrades().add(grade);
@@ -518,13 +526,129 @@ public class AdminServiceFrame {
     }
 
     private void modifyCourse() {
+        while (true){
+            Course course = Utils.userChooseCourse();
+            if (course == null){break;}
+
+            System.out.println(course);
+            //是否被修改
+            boolean isEdited = false;
+            //是否退出
+            boolean isQuit = false;
+            while (true){
+                if(isQuit){
+                    return;
+                }
+                String command;
+                //输入的值
+                String value;
+                System.out.println("输入 name 修改课程姓名");
+                System.out.println("输入 time 修改课程学时");
+                System.out.println("输入 score 修改课程学分");
+                System.out.println("输入 quit 退出修改");
+                command = sc.next();
+                switch (command){
+                    case "quit":
+                        isQuit = true;
+                        break;
+                    case "name":
+                        isEdited = true;
+                        System.out.print("将课程名称修改为：");
+                        value = sc.next();
+                        course.setCourseName(value);
+                        break;
+                    case "score":
+                        isEdited = true;
+                        while (true){
+                            System.out.print("将课程学分修改为：");
+                            value = sc.next();
+                            if (Utils.isLegalScore(value)){
+                                //设置密码，Student对象会自动转换为MD5文本
+                                course.setCourseScore(Double.parseDouble(value));
+                                break;
+                            } else {
+                                System.out.println("你输入的分数不合法，请重试！");
+                            }
+                        }
+                        break;
+                    case "time":
+                        isEdited = true;
+                        while (true){
+                            System.out.print("将课程学时修改为：");
+                            value = sc.next();
+                            if (Utils.isLegalScore(value)){
+                                //设置密码，Student对象会自动转换为MD5文本
+                                course.setCourseDuration(Double.parseDouble(value));
+                                break;
+                            } else {
+                                System.out.println("你输入的时长不合法，请重试！");
+                            }
+                        }
+                        break;
+                    default:
+                        System.out.println("未知指令，请重试！");
+                }
+                if (isEdited){
+                    System.out.println("修改完成！课程信息如下：");
+                    System.out.println(course);
+                    System.out.println("输入任何字符继续......");
+                    sc.next();
+                }
+            }
+        }
+
     }
 
     private void deleteCourse() {
+        while (true){
+            Course course = Utils.userChooseCourse();
+            if (course == null){break;}
+
+            System.out.print("请确认是否删除该课程（y/n）");
+            String confirm = sc.next();
+            switch (confirm){
+                case "y":
+                    DataHandler.getCourses().remove(course);
+                    System.out.println("已删除课程：" + course.getCourseName());
+                    break;
+                case "n":
+                    System.out.println("取消操作");
+                    break;
+                default:
+                    System.out.println("未知指令，请重试！");
+            }
+        }
     }
 
     private void addCourse() {
-
+        String courseName;
+        double courseDuration,courseScore;
+        System.out.println("请输入课程名：");
+        courseName = sc.next();
+        while (true){
+            System.out.print("请输入课程学时：");
+            String temp = sc.next();
+            if (Utils.isLegalScore(temp)){
+                courseDuration = Double.parseDouble(temp);
+                break;
+            } else {
+                System.out.println("你输入的时长不合法，请重试！");
+            }
+        }
+        while (true){
+            System.out.print("请输入课程学分：");
+            String temp = sc.next();
+            if (Utils.isLegalScore(temp)){
+                courseScore = Double.parseDouble(temp);
+                break;
+            } else {
+                System.out.println("你输入的时长不合法，请重试！");
+            }
+        }
+        System.out.println("课程添加成功！");
+        Course course = new Course(courseName,courseScore,courseDuration);
+        DataHandler.getCourses().add(course);
+        System.out.println();
     }
 
     /*      course field end        */
@@ -689,8 +813,13 @@ public class AdminServiceFrame {
     private void addStudent() {
         String id;
         String email;
-        System.out.println("请输入学生的姓名：");
+        System.out.println("请输入学生的姓名：(输入0退出)");
         String name = sc.next();
+
+        if (name.equals("0")){
+            System.out.println("退出操作");
+            return;
+        }
 
         while (true){
             System.out.println("请输入学生的学号：");
