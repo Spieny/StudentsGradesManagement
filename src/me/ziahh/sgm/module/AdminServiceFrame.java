@@ -125,7 +125,7 @@ public class AdminServiceFrame {
                     //逐一输出
                     for (String s : st) {
                         pagedStudents.add((Student)Utils.getPersonById(s.substring(0,12)));
-                        System.out.println(i + ". " + s);
+                          System.out.println(i + ". " + s);
                         i++;
                     }
                 }
@@ -147,6 +147,7 @@ public class AdminServiceFrame {
                 //要管理的学生对象s
                 //Student s = (Student) Utils.getPersonById(studentID);
                 Student s = null;
+
                 //防止爆数组
                 try{
                     s = pagedStudents.get(Integer.parseInt(studentID)-1);
@@ -182,9 +183,7 @@ public class AdminServiceFrame {
                     }
                 }
             }
-
         }
-
     }
 
     private void changePassword() {
