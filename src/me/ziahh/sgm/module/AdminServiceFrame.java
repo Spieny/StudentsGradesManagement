@@ -36,13 +36,13 @@ public class AdminServiceFrame {
             String in = sc.next();
             switch (in){
                 case "1":
-                    studentOpearateMenu();
+                    studentOperateMenu();
                     break;
                 case "2":
-                    courseOpearateMenu();
+                    courseOperateMenu();
                     break;
                 case "3":
-                    teacherOpearateMenu();
+                    teacherOperateMenu();
                     break;
                 case "4":
                     searchMenu();
@@ -76,85 +76,16 @@ public class AdminServiceFrame {
             System.out.println("还没有添加任何学生，请至少添加一个。");}
         if(teachers.isEmpty()){
             System.out.println("还没有添加任何教师，请至少添加一个。");}
-        //选择课程
-        int page = 1;
-        //int command = -1;
+
         while (true){
-            System.out.println();
-            System.out.println("----------------------- 请选择课程 -----------------------");
-            //读取课程信息的字符串数组
-            String[] r = Utils.pagedQuery(courses,5,page);
-            if (r != null) {
-                //逐一输出
-                for (String s : r) {
-                    System.out.println(s);
-                }
-            }
-            System.out.println("------------------------ 第" + page + "页 ------------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
-            String courseId = sc.next();
-            if (courseId.equals("2") && page < (courses.size() / 5) + 1){
-                page++;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("1") && page > 1){
-                page--;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("0")){
-                System.out.println("退出查询......");
+            Course c = Utils.userChooseCourse();
+            if (c == null){
                 break;
             }
-            //往选择的课程里添加学生成绩
-            Course c = (Course) Utils.getCourseById(courseId);
-            if (c == null){
-                System.out.println("你选择的课程不存在！请重试。");
-                continue;
-            }
-            //分页查询学生信息，选择要添加的学生并添加成绩
-            int page2nd = 1;
-            //int command = -1;
-            while (true){
-                System.out.println();
-                System.out.println("--------------------- "+c.getCourseName()+",请选择学生 ---------------------");
-                //读取学生信息的字符串数组
-                ArrayList<Student> pagedStudents = new ArrayList<>();
-                String[] st = Utils.pagedQuery(students,5,page2nd);
-                if (st != null) {
-                    int i = 1;
-                    //逐一输出
-                    for (String s : st) {
-                        pagedStudents.add((Student)Utils.getPersonById(s.substring(0,12)));
-                          System.out.println(i + ". " + s);
-                        i++;
-                    }
-                }
-                System.out.println("--------------------------- 第" + page2nd + "页 --------------------------------");
-                System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询 | 输入对应学生前的编号以确认");
-                String studentID = sc.next();
-                if (studentID.equals("a") && page2nd < (students.size() / 5) + 1){
-                    page2nd++;
-                    continue;//如果输入的是翻页指令，直接跳过下面的代码
-                }
-                if (studentID.equals("d") && page2nd > 1){
-                    page2nd--;
-                    continue;//如果输入的是翻页指令，直接跳过下面的代码
-                }
-                if (studentID.equals("0")){
-                    System.out.println("退出查询......");
-                    break;
-                }
-                //要管理的学生对象s
-                //Student s = (Student) Utils.getPersonById(studentID);
-                Student s = null;
+                //分页查询学生信息，选择要添加的学生并添加成绩
+                Student s = Utils.userChooseAStudent();
 
                 //防止爆数组
-                try{
-                    s = pagedStudents.get(Integer.parseInt(studentID)-1);
-                } catch (Exception e){
-                    System.out.println("你查找的学生不存在!");
-                    continue;
-                }
                 if (s == null){
                     System.out.println("你查找的学生不存在！");
                     continue;
@@ -182,7 +113,6 @@ public class AdminServiceFrame {
                         System.out.println("分数不合法！请重新输入。");
                     }
                 }
-            }
         }
     }
 
@@ -228,7 +158,7 @@ public class AdminServiceFrame {
 
     /*      teacher field start        */
 
-    private void teacherOpearateMenu() {
+    private void teacherOperateMenu() {
         boolean flag = false;
         while (!flag){
             System.out.println("====> 管理员界面 教师子菜单 <====");
@@ -458,7 +388,7 @@ public class AdminServiceFrame {
 
     /*      course field begin        */
 
-    private void courseOpearateMenu() {
+    private void courseOperateMenu() {
         boolean flag = false;
         while (!flag){
             System.out.println("====> 管理员界面 课程子菜单 <====");
@@ -495,44 +425,14 @@ public class AdminServiceFrame {
     }
 
     private void queryCourse() {
-        ArrayList<Course> courses = DataHandler.getCourses();
-        int page = 1;
-        //int command = -1;
-        while (true){
-            System.out.println();
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            //读取课程信息的字符串数组
-            String[] r = Utils.pagedQuery(courses,5,page);
-            if (r != null) {
-                //逐一输出
-                int i = 1;
-                for (String s : r) {
-                    System.out.println(i + "." + s);
-                    i++;
-                }
-            }
-            System.out.println("-------------------- 第" + page + "页 --------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
-            String courseId = sc.next();
-            if (courseId.equals("2") && page < (courses.size() / 5) + 1){
-                page++;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("1") && page > 1){
-                page--;
-                continue;//如果输入的是翻页指令，直接跳过下面的代码
-            }
-            if (courseId.equals("0")){
-                System.out.println("退出查询......");
-                break;
-            }
-            Course c = Utils.getCourseById(courseId);
+            Course c = Utils.userChooseCourse();
             if (c == null){
                 System.out.println("你选择的课程不存在！");
             } else {
                 System.out.println(c);
+                System.out.println("输入任意字符继续......");
+                sc.next();
             }
-        }
     }
 
     private void modifyCourse() {
@@ -662,7 +562,7 @@ public class AdminServiceFrame {
 
     /*      course field end        */
 
-    private void studentOpearateMenu() {
+    private void studentOperateMenu() {
         while (true) {
             System.out.println("====> 管理员界面 学生子菜单 <====");
             System.out.println("         a. 添加学生");

@@ -340,27 +340,28 @@ public class Utils {
                 }
             }
             System.out.println("-------------------- 第" + page + "页 --------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
+            System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询");
+            System.out.println("请输入你选择的教师的序号");
             String teacherId = sc.next();
             if (teacherId.equals("0")){
                 System.out.println("退出查询......");
                 break;
             }
             Teacher s = null;
-            try{
-                s = pagedTeachers.get(Integer.parseInt((teacherId))-1);
-            } catch (Exception e){
-                System.out.println("你查找的教师不存在!");
-                continue;
-            }
             //如果输入的是翻页指令，直接跳过下面的代码
-            if (teacherId.equals("2") && page < (teachers.size() / 5) + 1){
+            if (teacherId.equals("d") && page < (teachers.size() / 5) + 1){
                 page++;
                 continue;
             }
             //如果输入的是翻页指令，直接跳过下面的代码
-            if (teacherId.equals("1") && page > 1){
+            if (teacherId.equals("a") && page > 1){
                 page--;
+                continue;
+            }
+            try{
+                s = pagedTeachers.get(Integer.parseInt((teacherId))-1);
+            } catch (Exception e){
+                System.out.println("你查找的教师不存在!");
                 continue;
             }
             if (s == null){
@@ -374,6 +375,7 @@ public class Utils {
 
     public static Course userChooseCourse(){
         ArrayList<Course> courses = DataHandler.getCourses();
+        ArrayList<Course> pagedCourses = new ArrayList<>();
         int page = 1;
         //int command = -1;
         while (true){
@@ -385,19 +387,20 @@ public class Utils {
                 //逐一输出
                 int i = 1;
                 for (String s : r) {
+                    pagedCourses.add(Utils.getCourseById(s.substring(0,6)));
                     System.out.println(i + ". " + s);
                     i++;
                 }
             }
             System.out.println("--------------------- 第" + page + "页 ---------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
-            System.out.println("请输入你选择的课程的课程号：");
+            System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询");
+            System.out.println("请输入你选择的课程的序号：");
             String courseId = sc.next();
-            if (courseId.equals("2") && page < (courses.size() / 5) + 1){
+            if (courseId.equals("d") && page < (courses.size() / 5) + 1){
                 page++;
                 continue;//如果输入的是翻页指令，直接跳过下面的代码
             }
-            if (courseId.equals("1") && page > 1){
+            if (courseId.equals("a") && page > 1){
                 page--;
                 continue;//如果输入的是翻页指令，直接跳过下面的代码
             }
@@ -405,7 +408,13 @@ public class Utils {
                 System.out.println("退出查询......");
                 break;
             }
-            Course c = Utils.getCourseById(courseId);
+            Course c = null;
+            try{
+                c = pagedCourses.get(Integer.parseInt((courseId))-1);
+            } catch (Exception e){
+                System.out.println("你选择的课程不存在!");
+                continue;
+            }
             if (c == null){
                 System.out.println("你选择的课程不存在！");
             } else {
@@ -417,6 +426,7 @@ public class Utils {
 
     public static Student userChooseAStudent(){
         ArrayList<Student> students = DataHandler.getStudents();
+        ArrayList<Student> pagedStudents = new ArrayList<>();
         int page = 1;
         //int command = -1;
         while (true){
@@ -428,19 +438,20 @@ public class Utils {
                 //逐一输出
                 int i = 1;
                 for (String s : r) {
+                    pagedStudents.add((Student)Utils.getPersonById(s.substring(0,12)));
                     System.out.println(i + ". " + s);
                     i++;
                 }
             }
             System.out.println("--------------------- 第" + page + "页 ---------------------");
-            System.out.println("输入 1 返回上一页 | 输入 2 进入下一页 | 输入 0 退出查询");
-            System.out.println("请输入你选择的学生的学号：");
+            System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询");
+            System.out.println("请输入你选择的学生的序号：");
             String studentID = sc.next();
-            if (studentID.equals("2") && page < (students.size() / 5) + 1){
+            if (studentID.equals("d") && page < (students.size() / 5) + 1){
                 page++;
                 continue;//如果输入的是翻页指令，直接跳过下面的代码
             }
-            if (studentID.equals("1") && page > 1){
+            if (studentID.equals("a") && page > 1){
                 page--;
                 continue;//如果输入的是翻页指令，直接跳过下面的代码
             }
@@ -448,7 +459,13 @@ public class Utils {
                 System.out.println("退出查询......");
                 break;
             }
-            Student s = (Student) Utils.getPersonById(studentID);
+            Student s = null;
+            try{
+                s = pagedStudents.get(Integer.parseInt(studentID)-1);
+            } catch (Exception e){
+                System.out.println("你查找的学生不存在!");
+                continue;
+            }
             if (s == null){
                 System.out.println("你查找的学生不存在！");
             } else {
