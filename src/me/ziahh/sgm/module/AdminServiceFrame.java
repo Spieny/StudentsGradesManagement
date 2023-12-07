@@ -153,8 +153,105 @@ public class AdminServiceFrame {
     }
 
     private void searchMenu() {
+        while (true){
+            System.out.println("-----------搜索-----------");
+            System.out.println("a. 模糊查找");
+            System.out.println("b. 条件查找");
+            System.out.println("c. 退出");
+            System.out.println("-------------------------");
+            String command = sc.next();
+            switch (command){
+                case "a":
+                    //模糊查找
+                    fuzzySearch();
+                    break;
+                case "b":
+                    conditionalSearch();
+                    break;
+                    //条件查找
+                default:
+                    System.out.println("指令有误，请重新输入。");
+            }
+
+        }
 
     }
+
+    private void conditionalSearch() {
+    }
+
+    private void fuzzySearch(){
+            System.out.println("选择搜索种类:");
+            System.out.println("1. 学生");
+            System.out.println("2. 课程");
+            System.out.println("3. 教师");
+            System.out.println("0. 退出");
+            String type = sc.next();
+            String keyword;
+            switch (type){
+                case "1":
+                    System.out.println("请输入搜索学生的关键字：");
+                    keyword = sc.next();
+                    showSearchResults(Utils.getFuzzySearchResultSet(keyword,1));
+                    break;
+                case "2":
+                    System.out.println("请输入搜索课程关键字：");
+                    keyword = sc.next();
+                    showSearchResults(Utils.getFuzzySearchResultSet(keyword,2));
+                    break;
+                case "3":
+                    System.out.println("请输入搜索教师关键字：");
+                    keyword = sc.next();
+                    showSearchResults(Utils.getFuzzySearchResultSet(keyword,3));
+                    break;
+                case "0":
+                    System.out.println("退出操作");
+                    break;
+                default:
+                    System.out.println("该种类不存在！");
+                    break;
+            }
+    }
+
+    private void showSearchResults(ArrayList<Object> results){
+        System.out.println("------------------搜索结果------------------");
+        //如果搜索结果为空
+        if (results.isEmpty()){
+            System.out.println();
+            System.out.println("搜索结果为空");
+            System.out.println();
+            System.out.println("-------------------------------------------");
+            return;
+        }
+        //如果是学生
+        if (results.get(0) instanceof Student){
+            System.out.println("> 查找到包含关键字的学生如下：");
+            for (Object obj : results){
+                Student stu = (Student) obj;
+                System.out.println(stu.toStringLine());
+            }
+        }
+        //如果是教师
+        if (results.get(0) instanceof Teacher){
+            System.out.println("> 查找到包含关键字的教师如下：");
+            for (Object obj : results){
+                Teacher tea = (Teacher) obj;
+                System.out.println(tea.toStringLine());
+            }
+        }
+        //如果是课程
+        if (results.get(0) instanceof Course){
+            System.out.println("> 查找到包含关键字的课程如下：");
+            for (Object obj : results){
+                Course stu = (Course) obj;
+                System.out.println(stu.toStringLine());
+            }
+        }
+
+        System.out.println("-------------------------------------------");
+
+    }
+
 
     /*      teacher field start        */
 
@@ -173,14 +270,12 @@ public class AdminServiceFrame {
             String in = sc.next();
             switch (in){
                 case "a":
-                    //
                     addTeacher();
+                    break;
                 case "b":
-                    //
                     deleteTeacher();
                     break;
                 case "c":
-                    //
                     modifyTeacher();
                     break;
                 case "d":

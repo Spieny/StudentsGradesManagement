@@ -6,6 +6,7 @@ import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.module.DataHandler;
 
 import java.io.FileInputStream;
+import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
@@ -473,6 +474,93 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static ArrayList<Object> getFuzzySearchResultSet(String keyword,int type) {
+        ArrayList<Object> results = new ArrayList<>();
+        // 1. 学生
+        if (type == 1){
+            //输出时的序号
+            int i = 1;
+            //通过反射，获取student的全部变量
+            Field[] fields = Student.class.getDeclaredFields();
+            for(Student s: DataHandler.getStudents()){
+                for (Field f : fields){
+                    // 检查字段的类型是否与要搜索的关键词类型匹配
+                    if (f.getType().equals(keyword.getClass())) {
+                        // 检查字段的值是否包含关键词
+                        try {
+                            //设置字段允许访问
+                            f.setAccessible(true);
+                            Object fieldValue = f.get(s);
+                            if (fieldValue != null && fieldValue.toString().contains(keyword)) {
+                                // 如果找到匹配的字段，且对象不重复，则将该对象添加到匹配对象列表中
+                                if (!results.contains(s)){
+                                    results.add((Student)s);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        else if (type == 2){
+            //输出时的序号
+            int i = 1;
+            //通过反射，获取course的全部变量
+            Field[] fields = Course.class.getDeclaredFields();
+            for(Course s: DataHandler.getCourses()){
+                for (Field f : fields){
+                    // 检查字段的类型是否与要搜索的关键词类型匹配
+                    if (f.getType().equals(keyword.getClass())) {
+                        // 检查字段的值是否包含关键词
+                        try {
+                            //设置字段允许访问
+                            f.setAccessible(true);
+                            Object fieldValue = f.get(s);
+                            if (fieldValue != null && fieldValue.toString().contains(keyword)) {
+                                // 如果找到匹配的字段，且对象不重复，则将该对象添加到匹配对象列表中
+                                if (!results.contains(s)){
+                                    results.add((Course)s);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        else if (type == 3){
+            //输出时的序号
+            int i = 1;
+            //通过反射，获取teacher的全部变量
+            Field[] fields = Teacher.class.getDeclaredFields();
+            for(Teacher s: DataHandler.getTeachers()){
+                for (Field f : fields){
+                    // 检查字段的类型是否与要搜索的关键词类型匹配
+                    if (f.getType().equals(keyword.getClass())) {
+                        // 检查字段的值是否包含关键词
+                        try {
+                            //设置字段允许访问
+                            f.setAccessible(true);
+                            Object fieldValue = f.get(s);
+                            if (fieldValue != null && fieldValue.toString().contains(keyword)) {
+                                // 如果找到匹配的字段，且对象不重复，则将该对象添加到匹配对象列表中
+                                if (!results.contains(s)){
+                                    results.add((Teacher)s);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        return results;
     }
 
 }
