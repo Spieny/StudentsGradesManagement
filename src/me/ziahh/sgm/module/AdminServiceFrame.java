@@ -166,9 +166,11 @@ public class AdminServiceFrame {
                     fuzzySearch();
                     break;
                 case "b":
+                    //条件查找
                     conditionalSearch();
                     break;
-                    //条件查找
+                case "c":
+                    break;
                 default:
                     System.out.println("指令有误，请重新输入。");
             }

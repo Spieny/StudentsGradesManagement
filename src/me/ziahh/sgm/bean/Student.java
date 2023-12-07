@@ -168,7 +168,7 @@ public class Student implements Serializable {
 
     public String toStringLine(){
         //return studentId + " | " + studentClass + " " + studentName + " " + studentGender;
-        return String.format("%-12s %-18s %-3s %-1s", studentId,studentClass,studentName,studentGender);
+        return String.format("%-12s %-18s %-3s %-1s %s", studentId,studentClass,studentName,studentGender,studentEmail);
     }
 
     /**
