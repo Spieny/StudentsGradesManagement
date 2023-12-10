@@ -1,6 +1,7 @@
 package me.ziahh.sgm.util;
 
 import me.ziahh.sgm.bean.Course;
+import me.ziahh.sgm.bean.GradeLevel;
 import me.ziahh.sgm.bean.Student;
 import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.module.DataHandler;
@@ -432,7 +433,7 @@ public class Utils {
         //int command = -1;
         while (true){
             System.out.println();
-            System.out.println("-------------------- 第" + page + "页 ---------------------");
+            System.out.println("--------------------------- 第" + page + "页 ----------------------------");
             //读取学生信息的字符串数组
             String[] r = Utils.pagedQuery(students,5,page);
             if (r != null) {
@@ -444,7 +445,7 @@ public class Utils {
                     i++;
                 }
             }
-            System.out.println("--------------------- 第" + page + "页 ---------------------");
+            System.out.println("---------------------------- 第" + page + "页 ----------------------------");
             System.out.println("输入 a 返回上一页 | 输入 d 进入下一页 | 输入 0 退出查询");
             System.out.println("请输入你选择的学生的序号：");
             String studentID = sc.next();
@@ -476,6 +477,12 @@ public class Utils {
         return null;
     }
 
+    /**
+     * 获取实体中含有关键词的实体合集
+     * @param keyword 关键词
+     * @param type 代表种类，1为学生，2为课程，3为教师
+     * @return 所有含有关键词的实体对象的合集
+     */
     public static ArrayList<Object> getFuzzySearchResultSet(String keyword,int type) {
         ArrayList<Object> results = new ArrayList<>();
         // 1. 学生
@@ -486,6 +493,10 @@ public class Utils {
             Field[] fields = Student.class.getDeclaredFields();
             for(Student s: DataHandler.getStudents()){
                 for (Field f : fields){
+                    //不允许关键词匹配密码
+                    if (f.getName().equals("studentPassword")){
+                        continue;
+                    }
                     // 检查字段的类型是否与要搜索的关键词类型匹配
                     if (f.getType().equals(keyword.getClass())) {
                         // 检查字段的值是否包含关键词
@@ -563,4 +574,39 @@ public class Utils {
         return results;
     }
 
+    /**
+     * 获取按绩点排序的学生合集
+     *
+     * @param condition 字符串，只含有0或1，代表排序条件
+     * @return 返回符合条件的学生合集，如果返回null说明条件condition有误。
+     */
+    public static ArrayList<Student> getFilteredStudentByGPA(String condition){
+        ArrayList<Student> filteredStudents = DataHandler.getStudents();
+        //正序
+        if (condition.equals("1")){
+            filteredStudents.sort((o1,o2) -> Double.compare(o1.getGPA(),o2.getGPA()));
+
+        } //倒序
+        else if (condition.equals("2")) {
+            filteredStudents.sort((o1,o2) -> Double.compare(o2.getGPA(),o1.getGPA()));
+        } else {
+            filteredStudents = null;
+        }
+        return filteredStudents;
+    }
+
+    public static ArrayList<Student> getFilteredStudentByBuildTime(String condition){
+        ArrayList<Student> filteredStudents = DataHandler.getStudents();
+        //正序
+        if (condition.equals("1")){
+            filteredStudents.sort((o1,o2) -> o1.getBuildTime().compareTo(o2.getBuildTime()));
+
+        } //倒序
+        else if (condition.equals("2")) {
+            filteredStudents.sort((o1,o2) -> o2.getBuildTime().compareTo(o1.getBuildTime()));
+        } else {
+            filteredStudents = null;
+        }
+        return filteredStudents;
+    }
 }

@@ -4,6 +4,7 @@ import me.ziahh.sgm.bean.*;
 import me.ziahh.sgm.util.Utils;
 
 import javax.xml.crypto.Data;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class AdminServiceFrame {
     private Teacher currentLoginedTeacher = null;
     private Scanner sc = new Scanner(System.in);
     private boolean quitFlag = false;
+    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss");
 
     public AdminServiceFrame(Teacher teacher){
         currentLoginedTeacher = teacher;
@@ -153,10 +155,14 @@ public class AdminServiceFrame {
     }
 
     private void searchMenu() {
+        boolean quit = false;
         while (true){
+            if (quit){
+                break;
+            }
             System.out.println("-----------搜索-----------");
-            System.out.println("a. 模糊查找");
-            System.out.println("b. 条件查找");
+            System.out.println("a. 全体模糊查找");
+            System.out.println("b. 学生条件查找");
             System.out.println("c. 退出");
             System.out.println("-------------------------");
             String command = sc.next();
@@ -170,6 +176,7 @@ public class AdminServiceFrame {
                     conditionalSearch();
                     break;
                 case "c":
+                    quit = true;
                     break;
                 default:
                     System.out.println("指令有误，请重新输入。");
@@ -180,6 +187,47 @@ public class AdminServiceFrame {
     }
 
     private void conditionalSearch() {
+        System.out.println("选择搜索依据:");
+        System.out.println("1. 学生绩点");
+        System.out.println("2. 档案时间");
+        System.out.println("0. 退出搜索");
+        String type = sc.next();
+        String condition;
+        switch (type){
+            case "1":
+                while (true){
+                    System.out.println("请输入排序顺序，1为正序(绩点最高在最后)，2为倒序，0退出");
+                    condition = sc.next();
+                    //退出
+                    if (condition.equals("0")){
+                        break;
+                    } else if(condition.equals("1") || condition.equals("2")){
+                        showGPASearchResults(Utils.getFilteredStudentByGPA(condition));
+                        break;
+                    } else {
+                        System.out.println("你输入的格式有误");
+                    }
+                }
+                break;
+            case "2":
+                while (true){
+                    System.out.println("请输入时间排序顺序，1为正序，2为倒序，0退出");
+                    condition = sc.next();
+                    //退出
+                    if (condition.equals("0")){
+                        break;
+                    } else if(condition.equals("1") || condition.equals("2")){
+                        showBuildTimeSearchResults(Utils.getFilteredStudentByBuildTime(condition));
+                        break;
+                    } else {
+                        System.out.println("你输入的格式有误");
+                    }
+                }
+                break;
+            default:
+                System.out.println("该依据不存在！");
+                break;
+        }
     }
 
     private void fuzzySearch(){
@@ -213,6 +261,44 @@ public class AdminServiceFrame {
                     System.out.println("该种类不存在！");
                     break;
             }
+    }
+
+    private void showGPASearchResults(ArrayList<Student> results) {
+        System.out.println("------------------搜索结果------------------");
+        //如果搜索结果为空
+        if (results.isEmpty()) {
+            System.out.println();
+            System.out.println("搜索结果为空");
+            System.out.println();
+            System.out.println("-------------------------------------------");
+            return;
+        }
+        //如果是学生
+        if (results.get(0) != null) {
+            for (Student stu : results) {
+                System.out.println(stu.getStudentName() + " " + "绩点：" + stu.getGPA());
+            }
+            System.out.println("-------------------------------------------");
+        }
+    }
+
+    private void showBuildTimeSearchResults(ArrayList<Student> results) {
+        System.out.println("------------------搜索结果------------------");
+        //如果搜索结果为空
+        if (results.isEmpty()) {
+            System.out.println();
+            System.out.println("搜索结果为空");
+            System.out.println();
+            System.out.println("-------------------------------------------");
+            return;
+        }
+        //如果是学生
+        if (results.get(0) != null) {
+            for (Student stu : results) {
+                System.out.println(stu.getStudentName() + " " + "档案建立时间：" + dtf.format(stu.getBuildTime()));
+            }
+            System.out.println("-------------------------------------------");
+        }
     }
 
     private void showSearchResults(ArrayList<Object> results){

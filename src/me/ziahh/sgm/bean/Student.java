@@ -280,6 +280,9 @@ public class Student implements Serializable {
             }
         }
         gpa = gpa / getTotalCourseScore();
+        if(Double.isNaN(gpa)){
+            gpa = 0.0;
+        }
         return gpa;
     }
 
