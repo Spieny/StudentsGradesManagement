@@ -204,8 +204,6 @@ public class Utils {
      * @return 学号格式无误返回真，否则返回假
      */
     public static boolean isValidStudentId(String id){
-        //以后尝试使用正则表达式
-
         //如果id长度不等于12，说明不是学生的学号
         if (id.length() != 12){
             return false;

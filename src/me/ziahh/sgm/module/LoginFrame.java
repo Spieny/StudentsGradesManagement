@@ -15,7 +15,6 @@ public class LoginFrame {
 
     private AdminServiceFrame adminServiceFrame = null;
     private StudentServiceFrame studentServiceFrame = null;
-    private TeacherServiceFrame teacherServiceFrame = null;
     private Scanner sc = new Scanner(System.in);
 
     public void run(){
@@ -101,12 +100,7 @@ public class LoginFrame {
                     if (Objects.equals(decodedPassword, teacher.getTeacherPassword())){
                         System.out.println("登录成功！");
                         isLogined = true;
-                        if(teacher.getTeacherType() == TeacherType.ADMIN){
-                            enterAdminFrame(teacher);
-                        } else {
-                            enterTeacherFrame(teacher);
-                        }
-
+                        enterAdminFrame(teacher);
                     } else {
                         System.out.println("工号或密码不正确，请重试！");
                         teacher.setFailToLoginTimes(teacher.getFailToLoginTimes() + 1);
@@ -156,10 +150,4 @@ public class LoginFrame {
         studentServiceFrame.start();
     }
 
-    private void enterTeacherFrame(Teacher teacher){
-        if (teacherServiceFrame == null){
-            teacherServiceFrame = new TeacherServiceFrame(teacher);
-        }
-        teacherServiceFrame.start();
-    }
 }
