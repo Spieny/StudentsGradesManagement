@@ -181,9 +181,7 @@ public class AdminServiceFrame {
                 default:
                     System.out.println("指令有误，请重新输入。");
             }
-
         }
-
     }
 
     private void conditionalSearch() {
