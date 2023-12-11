@@ -5,9 +5,11 @@ import me.ziahh.sgm.bean.GradeLevel;
 import me.ziahh.sgm.bean.Student;
 import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.module.DataHandler;
+import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
@@ -522,6 +524,10 @@ public class Utils {
             Field[] fields = Course.class.getDeclaredFields();
             for(Course s: DataHandler.getCourses()){
                 for (Field f : fields){
+                    //不允许匹配教师的密码
+                    if(f.getName().equals("teacherPassword")){
+                        continue;
+                    }
                     // 检查字段的类型是否与要搜索的关键词类型匹配
                     if (f.getType().equals(keyword.getClass())) {
                         // 检查字段的值是否包含关键词
@@ -572,6 +578,18 @@ public class Utils {
         return results;
     }
 
+    @Test
+    public static <T> ArrayList<T> Test(T t){
+        Class<Student> studentClass = Student.class;
+        Type stu = studentClass.getGenericSuperclass();
+        if(t.getClass().equals(Student.class)){
+            System.out.println("传入了学生");
+        } else if(t.getClass().equals(Teacher.class)){
+            System.out.println("传入了教师");
+        }
+        return null;
+    }
+
     /**
      * 获取按绩点排序的学生合集
      *
@@ -593,6 +611,12 @@ public class Utils {
         return filteredStudents;
     }
 
+    /**
+     * 获取按建档时间排序的学生合集
+     *
+     * @param condition 字符串，只含有0或1，代表排序条件
+     * @return 返回符合条件的学生合集，如果返回null说明条件condition有误。
+     */
     public static ArrayList<Student> getFilteredStudentByBuildTime(String condition){
         ArrayList<Student> filteredStudents = DataHandler.getStudents();
         //正序

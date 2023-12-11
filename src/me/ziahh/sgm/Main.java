@@ -1,5 +1,7 @@
 package me.ziahh.sgm;
 
+import me.ziahh.sgm.bean.Student;
+import me.ziahh.sgm.bean.Teacher;
 import me.ziahh.sgm.module.DataHandler;
 import me.ziahh.sgm.module.LoginFrame;
 import me.ziahh.sgm.util.Utils;
